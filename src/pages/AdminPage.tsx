@@ -4,8 +4,25 @@ import { OrderCardAdmin } from '@/components/orders/OrderCardAdmin'
 import { Sidebar } from '@/components/layout/Sidebar'
 import { FirebaseBanner } from '@/components/layout/FirebaseBanner'
 import { useOrders } from '@/context/OrdersContext'
+import { useOrderAnnouncements } from '@/hooks/useOrderAnnouncements'
 import { ADMIN_ACTIVE_STATUSES } from '@/utils/constants'
-import type { OrderStatus } from '@/types/order'
+import type { AnnouncementEvent } from '@/utils/announcements'
+import type { Order, OrderInput, OrderStatus } from '@/types/order'
+
+function statusToAnnouncement(status: OrderStatus): AnnouncementEvent | null {
+  switch (status) {
+    case 'frying':
+      return 'frying'
+    case 'ready':
+      return 'ready'
+    case 'delivered':
+      return 'delivered'
+    case 'cancelled':
+      return 'cancelled'
+    default:
+      return null
+  }
+}
 
 const columnMeta: Record<
   'preparing' | 'frying' | 'ready',
@@ -26,9 +43,17 @@ export function AdminPage() {
     changeStatus,
     activeOrders,
   } = useOrders()
+  const { announce } = useOrderAnnouncements()
 
-  const handleStatus = async (orderId: string, status: OrderStatus) => {
-    await changeStatus(orderId, status)
+  const handleStatus = async (order: Order, status: OrderStatus) => {
+    const event = statusToAnnouncement(status)
+    if (event) announce(event, order.orderNumber)
+    await changeStatus(order.id, status)
+  }
+
+  const handleCreate = async (input: OrderInput) => {
+    await createNewOrder(input)
+    announce('created', input.orderNumber)
   }
 
   return (
@@ -79,7 +104,7 @@ export function AdminPage() {
                         <OrderCardAdmin
                           key={order.id}
                           order={order}
-                          onStatusChange={(s) => handleStatus(order.id, s)}
+                          onStatusChange={(s) => handleStatus(order, s)}
                         />
                       ))}
                       {orders.length === 0 && (
@@ -99,7 +124,7 @@ export function AdminPage() {
       <NewOrderModal
         open={modalOpen}
         onClose={() => setModalOpen(false)}
-        onCreate={createNewOrder}
+        onCreate={handleCreate}
       />
     </div>
   )

@@ -1,4 +1,5 @@
 import { NavLink } from 'react-router-dom'
+import { SpeechToggle } from '@/components/layout/SpeechToggle'
 
 const navLinkClass = ({ isActive }: { isActive: boolean }) =>
   `flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-semibold transition-all ${
@@ -27,6 +28,10 @@ export function Sidebar() {
           TV Motoboys
         </NavLink>
       </nav>
+
+      <div className="mb-3">
+        <SpeechToggle />
+      </div>
 
       <p className="mt-auto px-2 text-xs text-zinc-600">
         v1.0 — Tempo real

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # APETIFLOW
 
 Sistema web para gestão de fluxo de pedidos de delivery em cozinha de salgados — inspirado em KDS (Kitchen Display System) do McDonald's e painéis do iFood.
@@ -162,3 +163,7 @@ O arquivo `vercel.json` garante que rotas como `/tv` funcionem (SPA).
 ---
 
 Desenvolvido para operação em horário de pico — poucos cliques, máxima legibilidade.
+=======
+# apetiflow
+Kitchen Display System (KDS) para deliverys e cozinhas operacionais.
+>>>>>>> e6fbd1c6556524e4c6bdc507524564ea60a03f50
