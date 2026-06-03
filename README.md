@@ -44,65 +44,6 @@ apetiflow/
 └── vite.config.ts
 ```
 
-## Passo a passo — criar o projeto do zero
-
-Se você quiser refazer manualmente (aprendizado):
-
-```bash
-npm create vite@latest apetiflow -- --template react-ts
-cd apetiflow
-npm install
-npm install firebase react-router-dom
-npm install -D tailwindcss @tailwindcss/vite @vitejs/plugin-react
-```
-
-Depois configure `vite.config.ts`, `index.css` com `@import "tailwindcss"` e as pastas acima.
-
-## Configurar Firebase (Realtime Database)
-
-1. Acesse [Firebase Console](https://console.firebase.google.com/)
-2. Crie um projeto (ex: `apetiflow-prod`)
-3. No menu lateral: **Build → Realtime Database → Criar banco**
-   - Modo de teste para desenvolvimento (ajuste regras depois)
-4. **Configurações do projeto → Seus apps → Web (`</>`)**
-5. Copie as credenciais para um arquivo `.env` na raiz:
-
-```bash
-copy .env.example .env
-```
-
-Preencha todas as variáveis `VITE_*`.
-
-### Regras sugeridas (desenvolvimento)
-
-No Realtime Database → **Regras**:
-
-```json
-{
-  "rules": {
-    "orders": {
-      ".read": true,
-      ".write": true
-    }
-  }
-}
-```
-
-> Em produção, use autenticação e regras restritivas.
-
-### Estrutura dos dados no Firebase
-
-```
-orders/
-  └── {idAuto}/
-        orderNumber: "4521"
-        platform: "ifood"
-        items: ["Coxinha", "Pastel"]
-        status: "preparing" | "frying" | "ready" | "delivered" | "cancelled"
-        createdAt: 1717000000000
-        updatedAt: 1717000000000
-```
-
 ## Rodar localmente
 
 ```bash
@@ -127,17 +68,8 @@ Na TV da garagem, abra `/tv` e pressione **F11** (fullscreen).
 | delivered  | (some)    | —                    |
 | cancelled  | (some)    | Botão **Cancelar**   |
 
-## Publicar na Vercel
-
-1. Suba o código para GitHub
-2. [vercel.com](https://vercel.com) → **Add New Project** → importe o repositório
-3. Framework: **Vite** (detectado automaticamente)
-4. Em **Environment Variables**, adicione todas as `VITE_FIREBASE_*` do `.env`
-5. Deploy
-
-O arquivo `vercel.json` garante que rotas como `/tv` funcionem (SPA).
-
 ## Telas
+
 
 ### Painel Admin (`/`)
 
@@ -148,11 +80,11 @@ O arquivo `vercel.json` garante que rotas como `/tv` funcionem (SPA).
 
 ### TV Motoboys (`/tv`)
 
-- Layout fullscreen dark premium
+- Layout fullscreen dark
 - Cards grandes com número, plataforma, itens e timer
 - Atualização instantânea via Firebase
 
-## Escalabilidade futura
+## Mudanças futuras
 
 - Adicionar login (Firebase Auth) no `OrdersContext`
 - Histórico em `orders_archive/`
