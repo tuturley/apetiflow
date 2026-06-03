@@ -6,23 +6,8 @@ import { FirebaseBanner } from '@/components/layout/FirebaseBanner'
 import { useOrders } from '@/context/OrdersContext'
 import { useOrderAnnouncements } from '@/hooks/useOrderAnnouncements'
 import { ADMIN_ACTIVE_STATUSES } from '@/utils/constants'
-import type { AnnouncementEvent } from '@/utils/announcements'
+import { announcementEventForStatus } from '@/utils/announcements'
 import type { Order, OrderInput, OrderStatus } from '@/types/order'
-
-function statusToAnnouncement(status: OrderStatus): AnnouncementEvent | null {
-  switch (status) {
-    case 'frying':
-      return 'frying'
-    case 'ready':
-      return 'ready'
-    case 'delivered':
-      return 'delivered'
-    case 'cancelled':
-      return 'cancelled'
-    default:
-      return null
-  }
-}
 
 const columnMeta: Record<
   'preparing' | 'frying' | 'ready',
@@ -46,7 +31,7 @@ export function AdminPage() {
   const { announce } = useOrderAnnouncements()
 
   const handleStatus = async (order: Order, status: OrderStatus) => {
-    const event = statusToAnnouncement(status)
+    const event = announcementEventForStatus(status)
     if (event) announce(event, order.orderNumber)
     await changeStatus(order.id, status)
   }

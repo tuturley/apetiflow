@@ -1,9 +1,35 @@
+import type { OrderStatus } from '@/types/order'
+
 export type AnnouncementEvent =
   | 'created'
   | 'frying'
   | 'ready'
   | 'delivered'
   | 'cancelled'
+
+/** Status que disparam voz na TV (garagem / motoboys) */
+export const TV_ANNOUNCE_STATUSES: OrderStatus[] = [
+  'frying',
+  'ready',
+  'delivered',
+]
+
+export function announcementEventForStatus(
+  status: OrderStatus,
+): AnnouncementEvent | null {
+  switch (status) {
+    case 'frying':
+      return 'frying'
+    case 'ready':
+      return 'ready'
+    case 'delivered':
+      return 'delivered'
+    case 'cancelled':
+      return 'cancelled'
+    default:
+      return null
+  }
+}
 
 const DIGIT_WORDS: Record<string, string> = {
   '0': 'zero',

@@ -1,6 +1,8 @@
 import { OrderCardTV } from '@/components/orders/OrderCardTV'
 import { StatusColumn } from '@/components/orders/StatusColumn'
+import { SpeechToggle } from '@/components/layout/SpeechToggle'
 import { useOrders } from '@/context/OrdersContext'
+import { useTVOrderAnnouncements } from '@/hooks/useTVOrderAnnouncements'
 import { TV_COLUMNS } from '@/utils/constants'
 
 type TVColumnStatus = 'preparing' | 'frying' | 'ready'
@@ -28,6 +30,7 @@ const columnStyles: Record<
 
 export function TVMotoboysPage() {
   const { getOrdersByStatus, loading } = useOrders()
+  useTVOrderAnnouncements()
 
   return (
     <div className="flex h-full min-h-screen flex-col bg-surface">
@@ -45,12 +48,15 @@ export function TVMotoboysPage() {
             </p>
           </div>
         </div>
-        <div className="text-right">
-          <p className="text-xs uppercase tracking-widest text-zinc-500">Ao vivo</p>
-          <p className="flex items-center justify-end gap-2 text-sm font-semibold text-ready">
-            <span className="h-2 w-2 animate-pulse rounded-full bg-ready" />
-            Sincronizado
-          </p>
+        <div className="flex flex-col items-end gap-2">
+          <SpeechToggle variant="compact" />
+          <div className="text-right">
+            <p className="text-xs uppercase tracking-widest text-zinc-500">Ao vivo</p>
+            <p className="flex items-center justify-end gap-2 text-sm font-semibold text-ready">
+              <span className="h-2 w-2 animate-pulse rounded-full bg-ready" />
+              Sincronizado
+            </p>
+          </div>
         </div>
       </header>
 
